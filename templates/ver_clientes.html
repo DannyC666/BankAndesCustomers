@@ -1,0 +1,48 @@
+<!-- cliente_existente.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Clientes Actuales</h2>
+
+<form method="GET" action="{% url 'ver_clientes' %}" class="form-inline mb-3">
+    <input type="text" name="search" class="form-control mr-sm-2" placeholder="Buscar por nombre o DNI" value="{{ request.GET.search }}">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+{% if clientes %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Profesión</th>
+                <th>Actividad Económica</th>
+                <th>Empresa</th>
+                <th>Ingresos</th>
+                <th>Deudas</th>
+                <th>Credit Scoring</th>
+                <th>Cliente Actual</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.DNI }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.profesion }}</td>
+                <td>{{ cliente.actividad_economica }}</td>
+                <td>{{ cliente.empresa }}</td>
+                <td>{{ cliente.ingresos }}</td>
+                <td>{{ cliente.deudas }}</td>
+                <td>{{ cliente.credit_scoring }}</td>
+                <td>{{ cliente.cliente_actual }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No hay clientes actuales.</p>
+{% endif %}
+{% endblock %}
