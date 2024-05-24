@@ -1,0 +1,49 @@
+_format_version: "2.1"
+
+services:
+  - name: products_service
+    host: products_upstream
+    protocol: http
+    routes:
+      - name: products
+        paths:
+          - /search
+        strip_path: false
+
+  - name: score_service
+    host: score_upstream
+    protocol: http
+    routes:
+      - name: score
+        paths:
+          - ~^/clientes/(\d{8}[A-Z])/updateCreditScoring$
+          - ~^/clientes/(\d{8}[A-Z])/creditScoring$
+        strip_path: false
+
+  - name: customer_service
+    host: customer_upstream
+    protocol: http
+    routes:
+      - name: customer
+        paths:
+          - /ver_clientes
+          - /registrar_cliente
+          - /cliente_registrado
+        strip_path: false
+    
+upstreams:
+  - name: products_upstream
+    targets:
+      - target: 10.128.0.83:8080
+        weight: 100
+
+  - name: score_upstream
+    targets:
+      - target: 10.128.0.85:8080
+        weight: 100
+
+  - name: customer_upstream
+    targets:
+      - target: 10.128.0.84:8080
+        weight: 100
+
