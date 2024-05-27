@@ -1,5 +1,6 @@
 # views.py
 
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import ClienteForm
 from .models import Cliente
@@ -44,5 +45,21 @@ def ver_clientes(request):
         )
     else:
         clientes = Cliente.objects.all()
-    print(clientes)
-    return render(request, 'ver_clientes.html', {'clientes': clientes})
+    clientes_data = []
+    for cliente in clientes:
+        clientes_data.append({
+            'DNI': cliente.DNI,
+            'nombre': cliente.nombre,
+            'email': cliente.email,
+            'profesion': cliente.profesion,
+            'actividad_economica': cliente.actividad_economica,
+            'empresa': cliente.empresa,
+            'ingresos': cliente.ingresos,
+            'deudas': cliente.deudas,
+            'credit_scoring': cliente.credit_scoring,
+            'cliente_actual': cliente.cliente_actual,
+            '_class': cliente._class,
+        })
+
+    return JsonResponse({'clientes': clientes_data}, safe=False)
+    
